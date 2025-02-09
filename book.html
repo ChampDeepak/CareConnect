@@ -293,6 +293,7 @@
       </div>
     </div>
 
+    <script src="config.js"></script>
     <script>
       const weekday = document.querySelector("#weekday");
       const loading = document.querySelector("#loading");
@@ -324,7 +325,8 @@
       // Generate available time slots
       async function fetchAvailableSlots() {
         try {
-          const response = await fetch("http://localhost:3000/slots");
+          //const response = await fetch("http://localhost:3000/slots");
+          const response = await fetch(`${config.apiBaseUrl}/slots`);
           const busySlots = await response.json();
 
           // Generate available slots (9 AM to 5 PM, 30-minute intervals)
@@ -488,7 +490,8 @@ async function bookAppointment(event) {
 
     try {
         // Create Razorpay order
-        const orderResponse = await fetch("http://localhost:3000/create-order", {
+        // const orderResponse = await fetch("http://localhost:3000/create-order"
+        const orderResponse = await fetch(`${config.apiBaseUrl}/create-order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -511,7 +514,9 @@ async function bookAppointment(event) {
             handler: async function (response) {
                 try {
                     // Verify payment and create appointment
-                    const verifyResponse = await fetch("http://localhost:3000/verify-payment", {
+                    //const verifyResponse = await fetch("http://localhost:3000/verify-payment"
+                    const verifyResponse = await fetch(`${config.apiBaseUrl}/verify-payment`,
+                    {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
