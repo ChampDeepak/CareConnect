@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Doctor Appointment System</title>
+    <link rel="icon" type="image/png" href="/assets/f.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f7ff;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .terms-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2a5c8d;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: #3a7aba;
+            margin: 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        h2:hover {
+            color: #2a5c8d;
+        }
+
+        .terms-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .terms-section p {
+            margin-bottom: 1rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2a5c8d;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            transition: background 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: #3a7aba;
+        }
+
+        ol {
+            margin-left: 2rem;
+            list-style-type: decimal;
+            color: #666;
+        }
+
+        .warning-text {
+            color: #cc0000;
+            font-weight: 500;
+            border-left: 3px solid #cc0000;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #2a5c8d;
+            color: white;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+           
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                margin-top: 1rem;
+            }
+
+            .footer-links a {
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="terms-container">
+        <h1>Terms of Service</h1>
+        
+        <div class="terms-section">
+            <h2 onclick="toggleSection(this)">1. Acceptance of Terms</h2>
+            <p>By using the CareConnect System ("Service"), you agree to be bound by these Terms of Service. If you do not agree to all terms, you may not access or use our services.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2 onclick="toggleSection(this)">2. User Responsibilities</h2>
+            <p>As a user of this Service, you agree to:</p>
+            <ol>
+                <li>Provide accurate and complete information</li>
+                <li>Maintain the confidentiality of your account</li>
+                <li>Notify us immediately of unauthorized use</li>
+                <li>Use the service only for lawful purposes</li>
+            </ol>
+            <p class="warning-text">Misuse of the system may result in account termination.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2 onclick="toggleSection(this)">3. Appointment Management</h2>
+            <p>Appointment policies:</p>
+            <ol>
+                <li>Cancellations must be made ≥24 hours before appointment</li>
+                <li>Three missed appointments may result in service suspension</li>
+                <li>Emergency availability is not guaranteed</li>
+            </ol>
+        </div>
+
+        <div class="terms-section">
+            <h2 onclick="toggleSection(this)">4. Payments & Fees</h2>
+            <p>For paid services:</p>
+            <ol>
+                <li>All fees are non-refundable after service completion</li>
+                <li>We accept major credit cards and digital wallets</li>
+                <li>A $25 fee applies for late cancellations</li>
+            </ol>
+        </div>
+
+        <div class="terms-section">
+            <h2 onclick="toggleSection(this)">5. Service Limitations</h2>
+            <p>This Service does NOT provide:</p>
+            <ol>
+                <li>Emergency medical services</li>
+                <li>Medical diagnosis or treatment</li>
+                <li>Guaranteed practitioner availability</li>
+            </ol>
+            <p class="warning-text">In case of emergency, contact local emergency services immediately.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2 onclick="toggleSection(this)">6. Termination</h2>
+            <p>We reserve the right to:</p>
+            <ol>
+                <li>Suspend or terminate accounts for policy violations</li>
+                <li>Modify or discontinue service at any time</li>
+                <li>Refuse service to anyone at our discretion</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 CareConnect. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="index.html">Home</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reuse same JavaScript functions from privacy policy
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.querySelector('.back-to-top').style.display = 'block';
+            } else {
+                document.querySelector('.back-to-top').style.display = 'none';
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function toggleSection(element) {
+            const section = element.nextElementSibling;
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+            element.parentElement.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.terms-section h2').forEach(h2 => {
+            h2.nextElementSibling.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

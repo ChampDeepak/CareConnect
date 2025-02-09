@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Doctor Appointment System</title>
+    <link rel="icon" type="image/png" href="/assets/f.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f7ff;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .privacy-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2a5c8d;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: #3a7aba;
+            margin: 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        h2:hover {
+            color: #2a5c8d;
+        }
+
+        .policy-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .policy-section p {
+            margin-bottom: 1rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2a5c8d;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            transition: background 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: #3a7aba;
+        }
+
+        ul {
+            margin-left: 2rem;
+            list-style-type: square;
+            color: #666;
+        }
+
+        .highlight {
+            color: #2a5c8d;
+            font-weight: 500;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #2a5c8d;
+            color: white;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                margin-top: 1rem;
+            }
+
+            .footer-links a {
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="privacy-container">
+        <h1>Privacy Policy</h1>
+        
+        <div class="policy-section">
+            <h2 onclick="toggleSection(this)">1. Introduction</h2>
+            <p>CareConnect system ("Service") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our platform to book medical appointments.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2 onclick="toggleSection(this)">2. Data Collection</h2>
+            <p>We collect the following types of information:</p>
+            <ul>
+                <li>Personal identification information (Name, email, phone number)</li>
+                <li>Appointment details (date, time, medical concerns)</li>
+                <li>Technical data (IP address, browser type)</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2 onclick="toggleSection(this)">3. Use of Information</h2>
+            <p>Your data is used to:</p>
+            <ul>
+                <li>Schedule and manage appointments</li>
+                <li>Send appointment reminders</li>
+                <li>Improve our services</li>
+                <li>Comply with legal obligations</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2 onclick="toggleSection(this)">4. Data Sharing</h2>
+            <p>We <span class="highlight">do not sell</span> your personal information. Data may be shared with:</p>
+            <ul>
+                <li>Authorized medical practitioners</li>
+                <li>Payment processors (for paid services)</li>
+                <li>Legal authorities when required</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2 onclick="toggleSection(this)">5. Security Measures</h2>
+            <p>We implement industry-standard security measures including:</p>
+            <ul>
+                <li>SSL encryption</li>
+                <li>Regular security audits</li>
+                <li>Access controls</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 CareConnect. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="index.html">Home</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Show/hide back to top button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.querySelector('.back-to-top').style.display = 'block';
+            } else {
+                document.querySelector('.back-to-top').style.display = 'none';
+            }
+        };
+
+        // Smooth scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Toggle policy sections
+        function toggleSection(element) {
+            const section = element.nextElementSibling;
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+            element.parentElement.classList.toggle('active');
+        }
+
+        // Initialize all sections as visible
+        document.querySelectorAll('.policy-section h2').forEach(h2 => {
+            h2.nextElementSibling.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

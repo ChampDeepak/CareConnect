@@ -1,0 +1,569 @@
+<!-- book.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Appointment - Dr. Ravi Mishra</title>
+    <link rel="icon" type="image/png" href="/assets/f.png">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.1/luxon.min.js"></script>
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-700: #374151;
+        --gray-900: #111827;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      body {
+        background-color: var(--gray-100);
+        color: var(--gray-900);
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .active {
+        color: white !important;
+        background-color: rgb(87, 87, 246) !important;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: var(--gray-900);
+        font-size: 1.875rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        color: var(--gray-700);
+      }
+
+      .slots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+      #anyremark {
+        font-family: Arial, sans-serif; /* Use a clean, readable font */
+        font-size: 16px; /* Increase text size */
+        font-weight: 500; /* Make text slightly bold */
+        line-height: 1.5; /* Improve readability */
+        color: #333; /* Dark gray text for contrast */
+        padding: 10px; /* Add some spacing inside */
+        border: 1px solid #ccc; /* Subtle border */
+        border-radius: 5px; /* Rounded corners */
+        outline: none; /* Remove blue highlight on focus */
+        resize: none; /* Disable textarea resizing */
+        width: 100%; /* Make it responsive */
+        /* box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1); Soft inner shadow */
+      }
+
+      #anyremark:focus {
+        border-color: #007bff; /* Highlight on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow effect */
+      }
+
+      /* CSS */
+      .button-55 {
+        align-self: center;
+        background-color: #fff;
+        background-image: none;
+        background-position: 0 90%;
+        background-repeat: repeat no-repeat;
+        background-size: 4px 3px;
+        border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+        border-style: solid;
+        border-width: 2px;
+        box-shadow: rgba(0, 0, 0, 0.2) 15px 28px 25px -18px;
+        box-sizing: border-box;
+        color: #41403e;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Neucha, sans-serif;
+        font-size: 1rem;
+        line-height: 23px;
+        outline: none;
+        padding: 0.75rem;
+        text-decoration: none;
+        transition: all 235ms ease-in-out;
+        border-bottom-left-radius: 15px 255px;
+        border-bottom-right-radius: 225px 15px;
+        border-top-left-radius: 255px 15px;
+        border-top-right-radius: 15px 225px;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+
+      .button-55:hover {
+        box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px -5px;
+        transform: translate3d(0, 2px, 0);
+      }
+
+      .button-55:focus {
+        box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 4px -6px;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--gray-700);
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.375rem;
+        font-size: 1rem;
+      }
+
+      .button {
+        background: var(--primary);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.375rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .button:hover {
+        background: var(--primary-dark);
+      }
+
+      .button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .message {
+        padding: 1rem;
+        border-radius: 0.375rem;
+        margin: 1rem 0;
+        text-align: center;
+      }
+
+      .message.error {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .message.success {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        color: var(--gray-700);
+      }
+
+      #slotSelection,
+      #userDetails,
+      #confirmation {
+        display: none;
+      }
+      #weekday {
+        display: none;
+        cursor: pointer;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+
+      .step-active {
+        display: block !important;
+      }
+      input[type="radio"] {
+        accent-color: #007bff; /* Change color to blue */
+        transform: scale(1.2); /* Make radio button slightly bigger */
+        margin-right: 5px;
+      }
+
+      label {
+        font-size: 16px;
+        font-weight: 500;
+        margin-right: 15px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="header">
+          <h1>Book an Appointment</h1>
+          <p>with Dr. Ravi Mishra</p>
+        </div>
+        <div id="weekday">
+          <div class="button-55 wday active" id="M">Monday</div>
+          <div class="button-55 wday" id="Tu">Tuesday</div>
+          <div class="button-55 wday" id="W">Wednesday</div>
+          <div class="button-55 wday" id="Th">Thursday</div>
+          <div class="button-55 wday" id="F">Friday</div>
+        </div>
+
+        <div id="loading" class="loading">Loading available slots...</div>
+
+        <div id="slotSelection">
+          <div id="slotsGrid1" class="slots-grid"></div>
+          <div id="slotsGrid2" class="slots-grid"></div>
+          <div id="slotsGrid3" class="slots-grid"></div>
+          <div id="slotsGrid4" class="slots-grid"></div>
+          <div id="slotsGrid5" class="slots-grid"></div>
+          <!-- <button id="proceedBtn" class="button" disabled>Proceed</button> -->
+        </div>
+
+        <div id="userDetails">
+          <form id="bookingForm">
+            <div class="form-group">
+              <label for="name">Full Name*</label>
+              <input type="text" id="name" required />
+            </div>
+            <div class="form-group">
+              <label for="age">Age*</label>
+              <input type="text" id="age" required />
+            </div>
+            <div class="form-group">
+              <label for="mobile">Mobile Number*</label>
+              <input type="tel" id="mobile" pattern="[0-9]{10}" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" id="email" />
+            </div>
+            <div>
+              <label>Are you taking an appointment for the first time?</label><br>
+              <label for="yes">Yes</label>
+              <input type="radio" id="yes" name="firstTime" value="Yes" />
+              
+              <label for="no">No</label>
+              <input type="radio" id="no" name="firstTime" value="No" />
+              <br><br>
+            </div>
+            <div class="form-group">
+              <label for="anyremark">Additional Note</label>
+              <textarea id="anyremark"></textarea>
+            </div>
+            <button type="submit" class="button">Confirm Booking</button>
+          </form>
+        </div>
+
+        <div id="confirmation">
+          <div class="message success">
+            <h2>Appointment Confirmed!</h2>
+            <p>Thank you for booking an appointment with Dr. Ravi Mishra.</p>
+            <p>We'll send you a confirmation email shortly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const weekday = document.querySelector("#weekday");
+      const loading = document.querySelector("#loading");
+      const days = document.querySelectorAll(".wday");
+      const DateTime = luxon.DateTime;
+      let selectedSlot = null;
+
+      // Show different steps of the booking process
+      function showStep(stepId) {
+        document
+          .querySelectorAll(
+            "#loading, #slotSelection, #userDetails, #confirmation"
+          )
+          .forEach((el) => el.classList.remove("step-active"));
+        document.querySelector("#" + stepId).classList.add("step-active");
+      }
+
+      // Format date and time for display
+      function formatSlot(dateTime) {
+        return DateTime.fromISO(dateTime).toLocaleString({
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        });
+      }
+
+      // Generate available time slots
+      async function fetchAvailableSlots() {
+        try {
+          const response = await fetch("http://localhost:3000/slots");
+          const busySlots = await response.json();
+
+          // Generate available slots (9 AM to 5 PM, 30-minute intervals)
+          const availableSlots = [];
+          const today = DateTime.now().startOf("day");
+
+          for (let i = 0; i < 7; i++) {
+            const currentDay = today.plus({ days: i });
+            if (currentDay.weekday <= 5) {
+              // Monday to Friday
+              for (let hour = 9; hour < 17; hour++) {
+                for (let minute of [0, 30]) {
+                  const slotTime = currentDay.set({
+                    hour,
+                    minute,
+                    second: 0,
+                    millisecond: 0,
+                  });
+
+                  // Check if slot is not in busy slots
+                  const isAvailable = !busySlots.some((busy) => {
+                    const busyStart = DateTime.fromISO(busy.start);
+                    const busyEnd = DateTime.fromISO(busy.end);
+                    return slotTime >= busyStart && slotTime < busyEnd;
+                  });
+
+                  if (isAvailable && slotTime > DateTime.now()) {
+                    availableSlots.push(slotTime.toISO());
+                  }
+                }
+              }
+            }
+          }
+
+          return availableSlots;
+        } catch (error) {
+          throw new Error("Failed to fetch available slots");
+        }
+      }
+      const slotsGrid1 = document.querySelector("#slotsGrid1");
+      const slotsGrid2 = document.querySelector("#slotsGrid2");
+      const slotsGrid3 = document.querySelector("#slotsGrid3");
+      const slotsGrid4 = document.querySelector("#slotsGrid4");
+      const slotsGrid5 = document.querySelector("#slotsGrid5");
+
+      days.forEach((day) => {
+        day.addEventListener("click", () => {
+          days.forEach((d) => {
+            d.classList.remove("active");
+          });
+          day.classList.add("active");
+          if (day.id === "M") {
+            slotsGrid1.style.display = "grid";
+            slotsGrid2.style.display = "none";
+            slotsGrid3.style.display = "none";
+            slotsGrid4.style.display = "none";
+            slotsGrid5.style.display = "none";
+          } else if (day.id === "Tu") {
+            slotsGrid1.style.display = "none";
+            slotsGrid2.style.display = "grid";
+            slotsGrid3.style.display = "none";
+            slotsGrid4.style.display = "none";
+            slotsGrid5.style.display = "none";
+          } else if (day.id === "W") {
+            slotsGrid1.style.display = "none";
+            slotsGrid2.style.display = "none";
+            slotsGrid3.style.display = "grid";
+            slotsGrid4.style.display = "none";
+            slotsGrid5.style.display = "none";
+          } else if (day.id === "Th") {
+            slotsGrid1.style.display = "none";
+            slotsGrid2.style.display = "none";
+            slotsGrid3.style.display = "none";
+            slotsGrid4.style.display = "grid";
+            slotsGrid5.style.display = "none";
+          } else if (day.id === "F") {
+            slotsGrid1.style.display = "none";
+            slotsGrid2.style.display = "none";
+            slotsGrid3.style.display = "none";
+            slotsGrid4.style.display = "none";
+            slotsGrid5.style.display = "grid";
+          }
+        });
+      });
+
+      // Initialize the booking page
+      async function initBooking() {
+        try {
+          const slots = await fetchAvailableSlots();
+
+          if (slots.length === 0) {
+            const slotsGrid = document.querySelector("#slotsGrid");
+            slotsGrid.innerHTML = `
+                        <div class="message error">
+                            No available slots found for the next 7 days.
+                            Please try again later.
+                        </div>
+                    `;
+            showStep("slotSelection");
+            return;
+          }
+
+          loading.style.display = "none";
+
+          weekday.style.display = "flex";
+
+          // Create slot buttons
+          slots.forEach((slot) => {
+            const button = document.createElement("button");
+            button.className = "slot-button";
+            button.classList.add("button-55");
+            button.textContent = formatSlot(slot);
+            button.onclick = () => {
+              document
+                .querySelectorAll(".slot-button")
+                .forEach((btn) => btn.classList.remove("selected"));
+              button.classList.add("selected");
+              selectedSlot = slot;
+              showStep("userDetails");
+              weekday.style.display = "none";
+              // document.querySelector('#proceedBtn').disabled = false;
+            };
+            //console.log(button.textContent[0]);
+            if (button.textContent[0] === "M") slotsGrid1.appendChild(button);
+            if (button.textContent[1] === "u") slotsGrid2.appendChild(button);
+            if (button.textContent[0] === "W") slotsGrid3.appendChild(button);
+            if (button.textContent[1] === "h") slotsGrid4.appendChild(button);
+            if (button.textContent[0] === "F") slotsGrid5.appendChild(button);
+          });
+          slotsGrid1.style.display = "grid";
+          slotsGrid2.style.display = "none";
+          slotsGrid3.style.display = "none";
+          slotsGrid4.style.display = "none";
+          slotsGrid5.style.display = "none";
+          showStep("slotSelection");
+        } catch (error) {
+          document.querySelector("#loading").innerHTML = `
+                    <div class="message error">
+                        Failed to load available slots. Please try again later.
+                    </div>
+                `;
+        }
+      }
+
+      // Handle form submission
+      // Replace the bookAppointment function in book.html
+
+async function bookAppointment(event) {
+    event.preventDefault();
+    
+    const bookingDetails = {
+        name: document.querySelector("#name").value,
+        age: document.querySelector("#age").value,
+        mobile: document.querySelector("#mobile").value,
+        email: document.querySelector("#email").value,
+        additionalNote: document.querySelector("#anyremark").value,
+        selectedOption: document.querySelector('input[name="firstTime"]:checked').value,
+        start: selectedSlot,
+        end: DateTime.fromISO(selectedSlot).plus({ minutes: 30 }).toISO()
+    };
+
+    try {
+        // Create Razorpay order
+        const orderResponse = await fetch("http://localhost:3000/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: bookingDetails.name,
+                email: bookingDetails.email
+            })
+        });
+        
+        if (!orderResponse.ok) throw new Error("Failed to create order");
+        const orderData = await orderResponse.json();
+
+        // Initialize Razorpay payment
+        const options = {
+            key: orderData.keyId,
+            amount: orderData.amount,
+            currency: orderData.currency,
+            name: "Dr. Ravi Mishra",
+            description: "Appointment Booking",
+            order_id: orderData.orderId,
+            handler: async function (response) {
+                try {
+                    // Verify payment and create appointment
+                    const verifyResponse = await fetch("http://localhost:3000/verify-payment", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                            bookingDetails
+                        })
+                    });
+
+                    if (!verifyResponse.ok) throw new Error("Payment verification failed");
+                    
+                    showStep("confirmation");
+                } catch (error) {
+                    showError("Payment verification failed. Please contact support.");
+                }
+            },
+            prefill: {
+                name: bookingDetails.name,
+                email: bookingDetails.email,
+                contact: bookingDetails.mobile
+            },
+            modal: {
+                ondismiss: function() {
+                    showError("Payment cancelled. Please try again.");
+                }
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+        
+    } catch (error) {
+        showError("Failed to initiate payment. Please try again later.");
+        console.error(error);
+    }
+}
+
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'message error';
+    errorDiv.textContent = message;
+    document.querySelector("#userDetails").appendChild(errorDiv);
+}
+
+      // Event Listeners
+      //document.querySelector('#proceedBtn').onclick = () => showStep('userDetails');
+
+      document.querySelector("#bookingForm").onsubmit = bookAppointment;
+
+      // Initialize the page
+      initBooking();
+    </script>
+  </body>
+</html>
