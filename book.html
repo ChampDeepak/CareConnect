@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Book Appointment - Dr. Ravi Mishra</title>
-    <link rel="icon" type="image/png" href="assets/f.png">
+    <link rel="icon" type="image/png" href="assets/f.png" />
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.1/luxon.min.js"></script>
     <style>
@@ -219,6 +219,22 @@
         margin-right: 15px;
         cursor: pointer;
       }
+
+      /* Mobile styles */
+      @media (max-width: 768px) {
+        #weekday {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          gap: 8px;
+          width: 100%;
+        }
+
+        .button-55.wday {
+          width: 100%;
+          font-size: 14px;
+          padding: 8px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -266,13 +282,14 @@
               <input type="text" id="email" />
             </div>
             <div>
-              <label>Are you taking an appointment for the first time?</label><br>
+              <label>Are you taking an appointment for the first time?</label
+              ><br />
               <label for="yes">Yes</label>
               <input type="radio" id="yes" name="firstTime" value="Yes" />
-              
+
               <label for="no">No</label>
               <input type="radio" id="no" name="firstTime" value="No" />
-              <br><br>
+              <br /><br />
             </div>
             <div class="form-group">
               <label for="anyremark">Additional Note</label>
@@ -292,13 +309,12 @@
       </div>
     </div>
 
-    
     <script>
       const weekday = document.querySelector("#weekday");
       const loading = document.querySelector("#loading");
       const days = document.querySelectorAll(".wday");
       const DateTime = luxon.DateTime;
-      const BACKEND_URL = 'https://careconnbackend.onrender.com';
+      const BACKEND_URL = "https://careconnbackend.onrender.com";
       let selectedSlot = null;
 
       // Show different steps of the booking process
@@ -474,37 +490,39 @@
       // Handle form submission
       // Replace the bookAppointment function in book.html
 
-async function bookAppointment(event) {
-    event.preventDefault();
-    
-    const bookingDetails = {
-        name: document.querySelector("#name").value,
-        age: document.querySelector("#age").value,
-        mobile: document.querySelector("#mobile").value,
-        email: document.querySelector("#email").value,
-        additionalNote: document.querySelector("#anyremark").value,
-        selectedOption: document.querySelector('input[name="firstTime"]:checked').value,
-        start: selectedSlot,
-        end: DateTime.fromISO(selectedSlot).plus({ minutes: 30 }).toISO()
-    };
+      async function bookAppointment(event) {
+        event.preventDefault();
 
-    try {
-        // Create Razorpay order
-        // const orderResponse = await fetch("http://localhost:3000/create-order" 
-        const orderResponse = await fetch(`${BACKEND_URL}/create-order`, {
+        const bookingDetails = {
+          name: document.querySelector("#name").value,
+          age: document.querySelector("#age").value,
+          mobile: document.querySelector("#mobile").value,
+          email: document.querySelector("#email").value,
+          additionalNote: document.querySelector("#anyremark").value,
+          selectedOption: document.querySelector(
+            'input[name="firstTime"]:checked'
+          ).value,
+          start: selectedSlot,
+          end: DateTime.fromISO(selectedSlot).plus({ minutes: 30 }).toISO(),
+        };
+
+        try {
+          // Create Razorpay order
+          // const orderResponse = await fetch("http://localhost:3000/create-order"
+          const orderResponse = await fetch(`${BACKEND_URL}/create-order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                name: bookingDetails.name,
-                email: bookingDetails.email
-            })
-        });
-        
-        if (!orderResponse.ok) throw new Error("Failed to create order");
-        const orderData = await orderResponse.json();
+              name: bookingDetails.name,
+              email: bookingDetails.email,
+            }),
+          });
 
-        // Initialize Razorpay payment
-        const options = {
+          if (!orderResponse.ok) throw new Error("Failed to create order");
+          const orderData = await orderResponse.json();
+
+          // Initialize Razorpay payment
+          const options = {
             key: orderData.keyId,
             amount: orderData.amount,
             currency: orderData.currency,
@@ -512,55 +530,59 @@ async function bookAppointment(event) {
             description: "Appointment Booking",
             order_id: orderData.orderId,
             handler: async function (response) {
-                try {
-                    // Verify payment and create appointment
-                    //const verifyResponse = await fetch("http://localhost:3000/verify-payment"
-                    const verifyResponse = await fetch(`${BACKEND_URL}/verify-payment`,
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                            bookingDetails
-                        })
-                    });
+              try {
+                // Verify payment and create appointment
+                //const verifyResponse = await fetch("http://localhost:3000/verify-payment"
+                const verifyResponse = await fetch(
+                  `${BACKEND_URL}/verify-payment`,
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      razorpay_order_id: response.razorpay_order_id,
+                      razorpay_payment_id: response.razorpay_payment_id,
+                      razorpay_signature: response.razorpay_signature,
+                      bookingDetails,
+                    }),
+                  }
+                );
 
-                    if (!verifyResponse.ok) throw new Error("Payment verification failed");
-                    
-                    showStep("confirmation");
-                } catch (error) {
-                    showError("Payment verification failed. Please contact support.");
-                }
+                if (!verifyResponse.ok)
+                  throw new Error("Payment verification failed");
+
+                showStep("confirmation");
+              } catch (error) {
+                showError(
+                  "Payment verification failed. Please contact support."
+                );
+              }
             },
             prefill: {
-                name: bookingDetails.name,
-                email: bookingDetails.email,
-                contact: bookingDetails.mobile
+              name: bookingDetails.name,
+              email: bookingDetails.email,
+              contact: bookingDetails.mobile,
             },
             modal: {
-                ondismiss: function() {
-                    showError("Payment cancelled. Please try again.");
-                }
-            }
-        };
+              ondismiss: function () {
+                showError("Payment cancelled. Please try again.");
+              },
+            },
+          };
 
-        const rzp = new Razorpay(options);
-        rzp.open();
-        
-    } catch (error) {
-        showError("Failed to initiate payment. Please try again later.");
-        console.error(error);
-    }
-}
+          const rzp = new Razorpay(options);
+          rzp.open();
+        } catch (error) {
+          showError("Failed to initiate payment. Please try again later.");
+          console.error(error);
+        }
+      }
 
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'message error';
-    errorDiv.textContent = message;
-    document.querySelector("#userDetails").appendChild(errorDiv);
-}
+      function showError(message) {
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "message error";
+        errorDiv.textContent = message;
+        document.querySelector("#userDetails").appendChild(errorDiv);
+      }
 
       // Event Listeners
       //document.querySelector('#proceedBtn').onclick = () => showStep('userDetails');
