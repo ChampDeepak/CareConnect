@@ -299,6 +299,7 @@
       const loading = document.querySelector("#loading");
       const days = document.querySelectorAll(".wday");
       const DateTime = luxon.DateTime;
+      const BACKEND_URL = 'https://careconnbackend.onrender.com';
       let selectedSlot = null;
 
       // Show different steps of the booking process
@@ -326,7 +327,7 @@
       async function fetchAvailableSlots() {
         try {
           //const response = await fetch("http://localhost:3000/slots");
-          const response = await fetch(`${config.apiBaseUrl}/slots`);
+          const response = await fetch(`${BACKEND_URL}/slots`);
           const busySlots = await response.json();
 
           // Generate available slots (9 AM to 5 PM, 30-minute intervals)
@@ -490,8 +491,8 @@ async function bookAppointment(event) {
 
     try {
         // Create Razorpay order
-        // const orderResponse = await fetch("http://localhost:3000/create-order"
-        const orderResponse = await fetch(`${config.apiBaseUrl}/create-order`, {
+        // const orderResponse = await fetch("http://localhost:3000/create-order" 
+        const orderResponse = await fetch(`${BACKEND_URL}/create-order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -515,7 +516,7 @@ async function bookAppointment(event) {
                 try {
                     // Verify payment and create appointment
                     //const verifyResponse = await fetch("http://localhost:3000/verify-payment"
-                    const verifyResponse = await fetch(`${config.apiBaseUrl}/verify-payment`,
+                    const verifyResponse = await fetch(`${BACKEND_URL}/verify-payment`,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
