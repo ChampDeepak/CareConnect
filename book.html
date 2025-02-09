@@ -446,8 +446,9 @@
           }
 
           loading.style.display = "none";
-
-          weekday.style.display = "flex";
+          if (window.innerWidth >= 768) weekday.style.display = "flex";
+          else weekday.style.display = "grid";
+          
 
           // Create slot buttons
           slots.forEach((slot) => {
@@ -488,7 +489,7 @@
       }
 
       // Handle form submission
-      // Replace the bookAppointment function in book.html
+      
 
       async function bookAppointment(event) {
         event.preventDefault();
